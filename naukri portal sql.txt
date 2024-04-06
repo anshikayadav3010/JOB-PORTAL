@@ -1,0 +1,339 @@
+create database DB_JOBPORTAL220723
+use DB_JOBPORTAL220723
+
+
+select * from tbljobrecruiter
+select * from tbljobseeker
+select * from tbladmin
+select * from tbljobprofile
+
+select * from tbljobpost
+select * from tbljoblocation
+
+select * from tbljobtype
+
+truncate table tbljobseeker
+
+
+
+--------------------------------------------------------
+
+
+
+
+
+--------------------------------------------------------------------------------
+create table tbljobprofileskills
+(tsk_id int primary key identity,
+ jpr_id int,
+ tsk_name varchar(50)
+)
+---------------------------------------------------------------------------------
+create table tblqualification
+(tql_id int primary key identity,
+ tql_name varchar(50)
+)
+---------------------------------------------------------------------------------
+create table tblgender
+(tg_id int primary key identity,
+ tg_name varchar(50)
+)
+----------------------------------------------------------------------------------
+create table tblcountry
+( tc_id int primary key identity,
+  tc_name varchar(50)
+)
+
+insert into tblcountry(tc_name)values('INDIA'),('USA'),('EUROPE')
+
+----------------------------------------------------------------------------
+create table tblstate
+( ts_id int primary key identity,
+  tc_id int,
+  ts_name varchar(50)
+)
+
+insert into tblstate(tc_id,ts_name)values(1,'DELHI')                         
+insert into tblstate(tc_id,ts_name)values(1,'MUMBAI')
+insert into tblstate(tc_id,ts_name)values(1,'BANGLORE')
+insert into tblstate(tc_id,ts_name)values(2,'NEWYORK')
+insert into tblstate(tc_id,ts_name)values(2,'BOSTON')
+insert into tblstate(tc_id,ts_name)values(2,'CLEVELAND')
+insert into tblstate(tc_id,ts_name)values(3,'FRANCE')
+insert into tblstate(tc_id,ts_name)values(3,'ITALY')
+insert into tblstate(tc_id,ts_name)values(3,'LONDON')
+----------------------------------------------------------------------------
+create table tblcity
+( tcity_id int primary key identity,
+  tc_id int,
+  ts_id int,
+  tcity_name varchar(50)
+)
+
+select * from tblcity
+
+insert into tblcity(tc_id,ts_id,tcity_name)values(1,1,'KASHMIRIGATE')                         
+
+select * from tblcity join tblstate on tblcity.ts_id=tblstate.ts_id join tblcountry on tblcity.tc_id=tblcountry.tc_id
+---------------------------------------------------------------------------
+
+create proc jobseeker_join
+as
+begin
+select * from tbljobseeker
+join tblgender on js_gender=tg_id
+join tblqualification on  js_qualification=tql_id
+join tbljobprofile on js_jobprofile=jpr_id
+join tblcountry on js_country=tc_id
+join tblstate on js_state=ts_id
+join tblcity on js_city=tcity_id
+end
+
+---------------------------------------------------------------------------
+
+create proc jobseeker_joinone
+@js_id int
+as
+begin
+select * from tbljobseeker
+join tblgender on js_gender=tg_id
+join tblqualification on  js_qualification=tql_id
+join tbljobprofile on js_jobprofile=jpr_id
+join tblcountry on js_country=tc_id
+join tblstate on js_state=ts_id
+join tblcity on js_city=tcity_id
+where js_id=@js_id
+end
+
+----------------------------------------------------------------------------
+
+create proc jobpost_statuschange
+@jp_id int
+as
+begin
+ declare @st int
+select @st=status from tbljobpost where jp_id=@jp_id
+  
+  if(@st=0)
+begin
+update tbljobpost set status=1 where jp_id=@jp_id
+  end 
+
+ else
+begin
+update tbljobpost set status=0 where jp_id=@jp_id
+end
+
+end
+----------------------------------------------------------------------------
+alter table tbljobseeker add 
+
+
+create  table tbljobseeker
+ ( js_id int primary key identity,
+   js_name varchar(50),
+   js_gender int,
+   js_email varchar(50),
+   js_password varchar(50),
+   js_dob varchar(20),
+   js_qualification int,
+   js_jobprofile int,
+   js_skills varchar(110),
+   js_country int,
+   js_state int,
+   js_city int,
+   js_image varchar(200),
+   js_resume varchar(200),
+   inserted_date date,
+   status int default 0
+)
+
+alter proc proc_tbljobseeker_insert
+@js_name varchar(50),
+@js_gender int,
+@js_email varchar(50),
+@js_password varchar(50),
+@js_dob varchar(20),
+@js_qualification int,
+@js_jobprofile int,
+@js_skills varchar(110),
+@js_country int,
+@js_state int,
+@js_city int,
+@js_image varchar(200),
+@js_resume varchar(200)
+as
+begin
+insert into tbljobseeker(js_name,js_gender,js_email,js_password,js_dob,js_qualification,js_jobprofile,js_skills,js_country,js_state,js_city,js_image,js_resume,inserted_date)
+values(@js_name,@js_gender,@js_email,@js_password,@js_dob,@js_qualification,@js_jobprofile,@js_skills,@js_country,@js_state,@js_city,@js_image,@js_resume,GETDATE())
+end
+------------------------------------------------------------------------------------------------------------
+
+alter proc proc_tbljobseeker_update
+@js_id int,
+@js_name varchar(50),
+@js_gender int,
+@js_email varchar(50),
+@js_password varchar(50),
+@js_dob varchar(20),
+@js_qualification int,
+@js_jobprofile int,
+@js_skills varchar(110),
+@js_country int,
+@js_state int,
+@js_city int,
+@js_image varchar(200),
+@js_resume varchar(200)
+as
+begin
+update tbljobseeker set js_name=@js_name,js_gender=@js_gender,js_email=@js_email,js_password=@js_password,js_dob=@js_dob,
+js_qualification=@js_qualification,js_jobprofile=@js_jobprofile,js_skills=@js_skills,js_country=@js_country,
+js_state=@js_state,js_city=@js_city,js_image=@js_image,js_resume=@js_resume
+where js_id=@js_id
+end
+
+
+
+----------------------------------------------------------------
+
+create table tbljobrecruiter
+(  jr_id int primary key identity,
+   jr_name varchar(50),
+   jr_url varchar(50),
+   jr_email varchar(50),
+   jr_password varchar(50),
+   inserted_date date,
+   status int default 0
+)
+
+create proc proc_tbljobrecruiter_insert
+@jr_name varchar(50),
+@jr_url varchar(50),
+@jr_email varchar(50),
+@jr_password varchar(50)
+as
+begin
+insert into tbljobrecruiter(jr_name,jr_url,jr_email,jr_password,inserted_date)
+values(@jr_name,@jr_url,@jr_email,@jr_password,GETDATE())
+end
+
+--------------------------------------------------------------------
+
+create table tbladmin
+(  admin_id int primary key identity,
+   admin_name varchar(50),
+   admin_gender int,
+   admin_email varchar(50),
+   admin_password varchar(50),
+   inserted_date date,
+   status int default 0
+)
+
+insert into tbladmin(admin_name,admin_gender,admin_email,admin_password,inserted_date)
+values('admin',1,'admin','admin',GETDATE())
+
+------------------------------------------------------
+
+create proc jobseeker_statuschange
+@js_id int
+as
+begin
+ declare @st int
+select @st=status from tbljobseeker where js_id=@js_id
+  
+  if(@st=0)
+begin
+update tbljobseeker set status=1 where js_id=@js_id
+end
+  
+  else
+begin
+update tbljobseeker set status=0 where js_id=@js_id
+end
+
+end
+----------------------------------------------------------------
+create proc jobrecruiter_statuschange
+@jr_id int
+as
+begin
+ declare @st int
+select @st=status from tbljobrecruiter where jr_id=@jr_id
+  
+  if(@st=0)
+begin
+update tbljobrecruiter set status=1 where jr_id=@jr_id
+end
+  
+  else
+begin
+update tbljobrecruiter set status=0 where jr_id=@jr_id
+end
+
+end
+---------------------------------------------------------------
+create table tbljobprofile
+(jpr_id int primary key identity,
+jpr_name varchar(50)
+)
+
+insert into tbljobprofile(jpr_name)values('Dot NET'),('HR MANAGER'),('Sales Manager'),('FullStack Developer'),('Android Developer'),('PHP Developer'),('CCE')
+
+
+----------------------------------------------------------------------------
+create table tbljoblocation
+(tjl_id int primary key identity,
+tjl_name varchar(50)
+)
+
+insert into tbljoblocation(tjl_name)values('NOIDA'),('GURUGRAM'),('DELHI'),('BANGLORE'),('MUMBAI'),('HYDRABAD'),('CHENNAI')
+------------------------------------------------------------------------------
+create table tbljobtype
+(tjt_id int primary key identity,
+tjt_name varchar(50)
+)
+
+insert into tbljobtype(tjt_name)values('HYBRID'),('WORK FROM HOME'),('WORK FROM OFFICE')
+
+------------------------------------------------------------------------------
+create table tbljobpost
+(jp_id int primary key identity,
+jr_id int,
+jpr_id int,
+minexp int,
+maxexp int,
+minsalary int,
+maxsalary int,
+tjt_id int,
+tjl_id int,
+noofvacany int,
+comment varchar(1000),
+inserted_date date,
+status int default 0
+)
+
+
+
+create proc jobpost_insert
+@jr_id int,
+@jpr_id int,
+@minexp int,
+@maxexp int,
+@minsalary int,
+@maxsalary int,
+@tjt_id int,
+@tjl_id int,
+@noofvacany int,
+@comment varchar(1000)
+as
+begin
+insert into tbljobpost(jr_id,jpr_id,minexp,maxexp,minsalary,maxsalary,tjt_id,tjl_id,noofvacany,comment,inserted_date)
+values(@jr_id,@jpr_id,@minexp,@maxexp,@minsalary,@maxsalary,@tjt_id,@tjl_id,@noofvacany,@comment,GETDATE())
+end
+
+
+
+
+
+
+

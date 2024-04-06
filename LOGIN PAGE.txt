@@ -1,0 +1,134 @@
+LOGIN PAGE 
+=================================================
+
+<%@ Page Title="" Language="C#" MasterPageFile="~/default.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="kavineknaukri.login" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table>
+        <tr>
+            <td style="background-color:gold;text-decoration-color:black">USER TYPE</td>
+            <td><asp:dropdownlist Id="ddlusertype" runat="server">
+                <asp:Listitem Text="--SELECT ITEMS--" value="0"></asp:Listitem>
+                 <asp:Listitem Text="JOB  RECRUITER" value="1"></asp:Listitem>
+                 <asp:Listitem Text="JOB SEEKER" value="2"></asp:Listitem>
+                 <asp:Listitem Text="ADMIN" value="3"></asp:Listitem>
+                </asp:dropdownlist></td>
+        </tr>
+         <tr>
+            <td style="background-color:gold;text-decoration-color:black">EMAIL : </td>
+            <td><asp:TextBox ID="txtemail" runat="server"></asp:TextBox></td>
+        </tr>
+         <tr>
+            <td style="background-color:gold;text-decoration-color:black">PASSWORD : </td>
+            <td><asp:TextBox ID="txtpassword" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+           <td style="background-color:gold;text-decoration-color:black">PRESS HERE : </td>
+            <td><asp:button ID="loginbtn" Text="REGISTER" runat="server" OnClick="loginbtn_Click"></asp:button></td>
+            </tr>
+        <tr>
+            <td></td>
+            <td style="background-color:white"><asp:Label ID="lblmsg" runat="server" ForeColor="Red" Font-Italic="true" Font-Bold="true"></asp:Label></td>
+        </tr>
+    </table>
+</asp:Content>
+==================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+ 
+namespace kavineknaukri
+{
+    public partial class login : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void loginbtn_Click(object sender, EventArgs e)
+        {
+            if(ddlusertype.SelectedValue == "1")
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from tbljobrecruiter where jr_email='" + txtemail.Text + "'and jr_password='" + txtpassword.Text + "' and status = 0 ", con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                con.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    Session["JRID"]= dt.Rows[0]["jr_id"];
+                    Response.Redirect("jobrecruiter folder/Homejobrecruiter.aspx");
+                    //lblmsg.Text = " --LOGIN SUCESSFULL-- ";
+                }
+                else
+                {
+                    lblmsg.Text = " --LOGIN UNSUCESSFULL-- ";
+                }
+            }
+            else if (ddlusertype.SelectedValue == "2")
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from tbljobseeker where js_email='"+txtemail.Text+"'and js_password='"+txtpassword.Text+"' and status = 0 ",con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                con.Close();
+
+                if(dt.Rows.Count>0)
+                {
+                    Session["JSID"] = dt.Rows[0]["js_id"];
+                    Response.Redirect("jobseeker folder/Homejobseeker.aspx");
+                    //lblmsg.Text = " --LOGIN SUCESSFULL-- ";
+                }
+                else
+                {
+                    lblmsg.Text = " --LOGIN UNSUCESSFULL-- ";
+                }
+
+
+
+            }
+            else if (ddlusertype.SelectedValue == "3")
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from tbladmin where admin_email='" + txtemail.Text + "'and admin_password='" + txtpassword.Text + "'", con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                con.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    Session["ADMINID"] = dt.Rows[0]["admin_id"];
+                    Response.Redirect("admin folder/Homeadmin.aspx");
+                    //lblmsg.Text = " --LOGIN SUCESSFULL-- ";
+                }
+                else
+                {
+                    lblmsg.Text = " --LOGIN UNSUCESSFULL-- ";
+                }
+            }
+        }
+    }
+}
+==================================================
+
+
+
+
+
+
+
+
+

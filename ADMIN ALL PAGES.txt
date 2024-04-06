@@ -1,0 +1,1602 @@
+ADMIN MASTER 
+================================================
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="admin.master.cs" Inherits="kavineknaukri.admin_folder.admin" %>
+<%@ Register Src="~/header1.ascx" TagName="myhead" TagPrefix="aa" %>
+<%@ Register Src="~/footer1.ascx" TagName="myfoot" TagPrefix="aa" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+           <table>
+
+                <tr>
+                    <td>
+                        <aa:myhead id="h1" runat="server"></aa:myhead>
+                    </td>
+                </tr>
+          
+                 <tr>
+                    <td style="background-color:pink;text-decoration-color:gold">
+                       <div id="menu">
+                           <ul class="menu">
+                               <li  style="text-decoration-color:gold" ><a href="Homeadmin.aspx"><span>HOME</span></a></li>
+                                <li><a href="#"><span>MASTER DATA</span></a>
+                               
+                               <ul>
+
+                               <li  style="text-decoration-color:gold"><a href="managecountry.aspx"><span>MANAGE COUNTRY</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managestate.aspx"><span>MANAGE STATE</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managecity.aspx"><span>MANAGE CITY</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managegender.aspx"><span>MANAGE GENDER</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managequalification.aspx"><span>MANAGE QUALIFICATION</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managejoblocation.aspx"><span>MANAGE JOB-LOCATION</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managejobprofile.aspx"><span>MANAGE JOB-PROFILE</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managejobprofileskills.aspx"><span>MANAGE JOB-PROFILE SKILLS</span></a>
+                              
+                               </ul>
+                               </li>
+
+                               <li  style="text-decoration-color:gold" ><a href="managejobpost.aspx"><span>MANAGE JOBS</span></a>
+                               <li  style="text-decoration-color:gold"><a href="changepasswordadmin.aspx"><span>CHANGE-PASSWORD</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managejobseeker.aspx"><span>MANAGE JOB-SEEKER</span></a>
+                               <li  style="text-decoration-color:gold"><a href="managejobrecruiter.aspx"><span>MANAGE JOB-RECRUITER</span></a>
+                               <li style="text-decoration-color:gold"><a href="logoutadmin.aspx"><span>LOGOUT</span></a></li>
+                               <%-- <li  style="text-decoration-color:gold"><a href="managehobbies.aspx"><span>MANAGE HOBBIES</span></a>
+                              --%>
+                                 </ul>
+
+                       </div>
+                    </td>
+                </tr> 
+
+                <tr>
+                    <td>
+                          <center>
+                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            </asp:ContentPlaceHolder>
+                          </center>
+                    </td>
+                </tr>
+              
+           
+                <tr>
+                    <td>
+                        <aa:myfoot if="f1" runat="server"></aa:myfoot>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+</html>
+
+=================================================
+ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/default.Master" AutoEventWireup="true" CodeBehind="adminmaster.aspx.cs" Inherits="kavineknaukri.admin_folder.adminmaster" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+</asp:Content>
+
+=================================================
+ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class adminmaster : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+=================================================
+CHANGE PASSWORD ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="changepasswordadmin.aspx.cs" Inherits="kavineknaukri.admin_folder.changepasswordadmin" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table>
+        <center>
+        <tr>
+            <td>CURRENT PASSWORD</td>
+            <td><asp:TextBox ID="txtcurrentpassword" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td>NEW PASSWORD</td>
+            <td><asp:TextBox ID="txtnewpassword" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td>CONFIRM NEW PASSWORD</td>
+            <td><asp:TextBox ID="txtconfirmnewpassword" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btncp" Text="CHANGE PASSWORD" runat="server" OnClick="btncp_Click" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Label ID="lblmsg" runat="server" ForeColor="Red" Font-Bold="true"></asp:Label></td>
+        </tr>
+        </center>
+        </table>
+</asp:Content>
+
+=================================================
+CHANGE PASSWORD ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class changepasswordadmin : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btncp_Click(object sender, EventArgs e)
+        {
+           
+                if (txtnewpassword.Text == txtconfirmnewpassword.Text)
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("update tbladmin set admin_password='" + txtnewpassword.Text + "' where admin_password='" + txtcurrentpassword.Text + "' and admin_id='" + Session["ADMINID"] + "'", con);
+                int i = cmd.ExecuteNonQuery();  /*executenonquerry returns an integer value (any 0-1-2-3 )*/
+                con.Close();
+                if (i == 0)
+                {
+                    lblmsg.Text = "CURRENT PASSWORD DO NOT MATCH ";
+                }
+                else
+                {
+                    lblmsg.Text = "PASSWORD CHANGED SUCESSFULLY";
+                }
+
+            }
+            else
+            {
+                lblmsg.Text = "PASSWORD UPDATE FAIL ";
+            }
+
+        }
+    }
+}
+=================================================
+HOME ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="Homeadmin.aspx.cs" Inherits="kavineknaukri.admin_folder.Homeadmin" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+             <td>ADMIN NAME</td>
+            <td><asp:Label ID="lblname" runat="server"></asp:Label></td>
+        </tr>
+         <tr>
+           <td>ADMIN GENDER</td>
+            <td><asp:Label ID="lblgender" runat="server"></asp:Label></td>
+        </tr>
+         <tr>
+           <td>ADMIN EMAIL</td>
+            <td><asp:Label ID="lblemail" runat="server"></asp:Label></td>
+        </tr>
+         <tr>
+           <td>ADMIN PASSWORD</td>
+            <td><asp:Label ID="lblpassword" runat="server"></asp:Label></td>
+        </tr>
+       
+    </table>
+</asp:Content>
+
+=================================================
+HOME ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class Homeadmin : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            if (!IsPostBack)
+            {
+                bindadmin();
+            }
+        }
+            public void bindadmin()
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("select * from tbladmin where admin_id='" + Session["ADMINID"] + "'", con);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                con.Close();
+                lblname.Text = dt.Rows[0]["admin_name"].ToString();
+                lblgender.Text = dt.Rows[0]["admin_gender"].ToString() == "1" ? "MALE" : dt.Rows[0]["admin_gender"].ToString() == "2" ? "FEMALE" : "OTHERS";
+                lblemail.Text = dt.Rows[0]["admin_email"].ToString();
+                lblpassword.Text = dt.Rows[0]["admin_password"].ToString();
+        }
+                             
+    }
+}
+=================================================
+LOGOUT ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="logoutadmin.aspx.cs" Inherits="kavineknaukri.admin_folder.logoutadmin" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+</asp:Content>
+
+=================================================
+LOGOUT ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class logoutadmin : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Response.Redirect("../login.aspx");
+        }
+    }
+}
+=================================================
+MANAGE CITY ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managecity.aspx.cs" Inherits="kavineknaukri.admin_folder.managecity" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>COUNTRY NAME:</td>
+            <td><asp:DropDownList ID="ddlcountry" runat="server" OnSelectedIndexChanged="ddlcountry_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList></td>
+        </tr>
+         <tr>
+            <td>STATE:</td>
+            <td><asp:DropDownList ID="ddlstate" runat="server"></asp:DropDownList></td>
+        </tr>
+         <tr>
+            <td>CITY:</td>
+            <td><asp:Textbox ID="txtcityname" runat="server"></asp:Textbox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE STATE" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvcity" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="CITY ID">
+                        <ItemTemplate>
+                            <%#Eval("tcity_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="STATE NAME">
+                        <ItemTemplate>
+                            <%#Eval("ts_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="COUNTRY NAME">
+                        <ItemTemplate>
+                            <%#Eval("tc_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="CITY NAME">
+                        <ItemTemplate>
+                            <%#Eval("tcity_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE CITY ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managecity : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindcity();
+                bindcountry();
+                ddlstate.Items.Insert(0, new ListItem("--SLECET STATE--", "0"));
+            }
+        }
+
+        public void bindcountry()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblcountry", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            ddlcountry.DataTextField = "tc_name";
+            ddlcountry.DataValueField = "tc_id";
+            ddlcountry.DataSource = dt;
+            ddlcountry.DataBind();
+            ddlcountry.Items.Insert(0, new ListItem("--SLECET COUNTRY--", "0"));
+        }
+
+        public void bindstate()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblstate", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            ddlstate.DataTextField = "ts_name";
+            ddlstate.DataValueField = "ts_id";
+            ddlstate.DataSource = dt;
+            ddlstate.DataBind();
+            ddlstate.Items.Insert(0, new ListItem("--SLECET STATE--", "0"));
+
+        }
+
+        public void bindcity()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblcity join tblstate on tblcity.ts_id=tblstate.ts_id join tblcountry on  tblcity.tc_id=tblcountry.tc_id", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvcity.DataSource = dt;
+            gvcity.DataBind();
+        }
+
+
+            protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblcity(tc_id,ts_id,tcity_name)values('" + ddlcountry.SelectedValue + "','"+ddlstate.SelectedValue+"','" + txtcityname.Text + "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        protected void ddlcountry_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bindstate();
+        }
+    }
+}
+=================================================
+MANAGE COUNTRY ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managecountry.aspx.cs" Inherits="kavineknaukri.admin_folder.managecountry" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>COUNTRY:</td>
+            <td><asp:TextBox ID="txtcountryname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE COUNTRY" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvcountry" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="COUNTRY ID">
+                        <ItemTemplate>
+                            <%#Eval("tc_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="COUNTRY NAME">
+                        <ItemTemplate>
+                            <%#Eval("tc_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE COUNTRY  ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managecountry : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindcountry();
+            }
+        }
+
+        public void bindcountry()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblcountry", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            gvcountry.DataSource = dt;
+            gvcountry.DataBind();
+            con.Close();
+        }
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblcountry(tc_name)values('" +txtcountryname.Text+ "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE GENDER ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managegender.aspx.cs" Inherits="kavineknaukri.admin_folder.managegender" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>GENDER:</td>
+            <td><asp:TextBox ID="txtgendername" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE GENDER" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvgender" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="GENDER ID">
+                        <ItemTemplate>
+                            <%#Eval("tg_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="GENDER NAME">
+                        <ItemTemplate>
+                            <%#Eval("tg_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE GENDER ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managegender : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindgender();
+            }
+        }
+
+        public void bindgender()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblgender", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvgender.DataSource = dt;
+            gvgender.DataBind();
+      
+        }
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblgender(tg_name)values('" + txtgendername.Text+ "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE HOBBIES ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managehobbies.aspx.cs" Inherits="kavineknaukri.admin_folder.managehobbies" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>HOBBIES:</td>
+            <td><asp:TextBox ID="txthobbiesname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE HOBBIE" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvhobbies" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="HOBBIE ID">
+                        <ItemTemplate>
+                            <%#Eval("th_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="HOBBIE NAME">
+                        <ItemTemplate>
+                            <%#Eval("th_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE HOBBIES ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managehobbies : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            if (!IsPostBack)
+            {
+                bindhobbiesname();
+            }
+
+        }
+
+        public void bindhobbiesname()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblhobbies", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            gvhobbies.DataSource = dt;
+            gvhobbies.DataBind();
+            con.Close();
+        }
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblhobbies(th_name)values('" + txthobbiesname.Text + "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE LOCATION ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejoblocation.aspx.cs" Inherits="kavineknaukri.admin_folder.managejoblocation" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table>
+        <tr>
+            <td>JOB LOCATION:</td>
+            <td><asp:TextBox ID="txtname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE LOCATION" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvjoblocation" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="JOB-LOCATION ID">
+                        <ItemTemplate>
+                            <%#Eval("tjl_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="JOB-LOCATION NAME">
+                        <ItemTemplate>
+                            <%#Eval("tjl_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+
+
+
+</asp:Content>
+
+=================================================
+MANAGE LOCATION ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejoblocation : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindjoblocation();
+            }
+        }
+
+        public void bindjoblocation()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljoblocation", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+           
+            gvjoblocation.DataSource = dt;
+            gvjoblocation.DataBind();
+           
+            con.Close();
+        }
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tbljoblocation(tjl_name)values('"+txtname.Text+"')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE JOB POST ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejobpost.aspx.cs" Inherits="kavineknaukri.admin_folder.managejobpost" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+             <tr>
+           <td><asp:GridView ID="gvjobs" runat="server" AutoGenerateColumns="False" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None" OnRowCommand="gvjobs_RowCommand" >
+               <AlternatingRowStyle BackColor="PaleGoldenrod" />
+               <Columns>
+                   <asp:TemplateField HeaderText="JOB ID">
+                       <ItemTemplate>
+                           <%#Eval("jp_id")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER NAME">
+                       <ItemTemplate>
+                           <%#Eval("jr_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-PROFILE ">
+                       <ItemTemplate>
+                           <%#Eval("jpr_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-LOCATION ">
+                       <ItemTemplate>
+                           <%#Eval("tjl_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                    <asp:TemplateField HeaderText="REQUIRED-EXPERIENCE ">
+                       <ItemTemplate>
+                           <%#Eval("minexp")%> years -   <%#Eval("maxexp")%> years
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                    
+                    <asp:TemplateField HeaderText="OFFERED SALARY RANGE ">
+                       <ItemTemplate>
+                       Rs.<%#Eval("minsalary")%>- Rs.<%#Eval("maxsalary")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   
+                   <asp:TemplateField HeaderText="NO OF VAcANCY">
+                       <ItemTemplate>
+                           <%#Eval("noofvacany")%>
+                           </ItemTemplate>
+                   </asp:TemplateField>
+                    <asp:TemplateField HeaderText="JOB-DESCRIPTION">
+                       <ItemTemplate>
+                           <%#Eval("comment")%>
+                           </ItemTemplate>
+                   </asp:TemplateField>
+                    <asp:TemplateField HeaderText="JOB-POSTED DATE">
+                       <ItemTemplate>
+                           <%#Eval("inserted_date")%>
+                           </ItemTemplate>
+                   </asp:TemplateField>
+
+                 <asp:TemplateField HeaderText="JOB-SEEKER STATUS">
+                       <ItemTemplate>
+                           <%#Eval("status").ToString() == "0" ? "ACTIVE-STATUS" : "INACTIVE-STATUS" %>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="ACTION BUTTON">
+                       <ItemTemplate>
+                          <asp:Button ID="actionbtn" runat="server" Text=' <%#Eval("status").ToString() == "0" ? "BLOCK" : "UNBLOCK" %>' CommandName="B" CommandArgument='<%#Eval("jp_id")%>' />
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+
+                     </Columns>
+               <FooterStyle BackColor="Tan" />
+               <HeaderStyle BackColor="Tan" Font-Bold="True" />
+               <PagerStyle BackColor="PaleGoldenrod" ForeColor="DarkSlateBlue" HorizontalAlign="Center" />
+               <SelectedRowStyle BackColor="DarkSlateBlue" ForeColor="GhostWhite" />
+               <SortedAscendingCellStyle BackColor="#FAFAE7" />
+               <SortedAscendingHeaderStyle BackColor="#DAC09E" />
+               <SortedDescendingCellStyle BackColor="#E1DB9C" />
+               <SortedDescendingHeaderStyle BackColor="#C2A47B" />
+               </asp:GridView>
+
+               </tr>
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE JOB POST  ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejobpost : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindjobpost();
+            }
+        }
+
+        public void bindjobpost()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljobpost join tbljobrecruiter on tbljobpost.jr_id=tbljobrecruiter.jr_id join tbljobprofile on tbljobpost.jpr_id=tbljobprofile.jpr_id join tbljoblocation on tbljobpost.tjl_id=tbljoblocation.tjl_id ", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvjobs.DataSource = dt;
+            gvjobs.DataBind();
+
+        }
+
+        protected void gvjobs_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "B")
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("jobpost_statuschange", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@jp_id", e.CommandArgument);
+                cmd.ExecuteNonQuery();
+                con.Close();
+                bindjobpost();
+            }
+        }
+    }
+}
+=================================================
+MANAGE JOB PROFILE ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejobprofile.aspx.cs" Inherits="kavineknaukri.admin_folder.managejobprofile" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+      <table>
+        <tr>
+            <td>JOB PROFILE:</td>
+            <td><asp:TextBox ID="txtname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE PROFILE" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvjobprofile" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="JOB-PROFILE ID">
+                        <ItemTemplate>
+                            <%#Eval("jpr_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="JOB-PROFILE NAME">
+                        <ItemTemplate>
+                            <%#Eval("jpr_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+
+</asp:Content>
+
+=================================================
+MANAGE JOB PROFILE ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejobprofile : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            if(!IsPostBack)
+            {
+                bindjobprofile();
+            }
+           
+        }
+
+        public void bindjobprofile()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljobprofile", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+           
+            gvjobprofile.DataSource = dt;
+            gvjobprofile.DataBind();
+            
+            con.Close();
+        }
+
+       
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tbljobprofile(jpr_name)values('"+txtname.Text+"')",con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE JOB PROFILE SKILLS ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejobprofileskills.aspx.cs" Inherits="kavineknaukri.admin_folder.managejobprofileskills" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table>
+        <tr>
+            <td>JOB PROFILE : </td>
+            <td><asp:DropDownList ID="ddljobprofile" runat="server"></asp:DropDownList></td>
+        </tr>
+        <tr>
+            <td>SKILLS : </td>
+            <td><asp:TextBox ID="txtskillname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsaveskills" Text="SAVE SKILLS" runat="server" OnClick="btnsaveskills_Click" /></td>
+        </tr>
+
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvjobskills" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="SKILL ID">
+                        <ItemTemplate>
+                            <%#Eval("tsk_id") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="JOB PROFILE">
+                        <ItemTemplate>
+                             <%#Eval("jpr_name") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="SKILL NAME">
+                        <ItemTemplate>
+                             <%#Eval("tsk_name") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+
+
+    </table>
+
+
+
+</asp:Content>
+
+=================================================
+MANAGE JOB PROFILE SKILLS ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejobprofileskills : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if(!IsPostBack)
+            {
+                bindjobprofile();
+                bindskills();
+            }
+        }
+
+        public void bindjobprofile()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljobprofile", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            ddljobprofile.DataTextField = "jpr_name";
+            ddljobprofile.DataValueField = "jpr_id";
+            ddljobprofile.DataSource = dt;
+            ddljobprofile.DataBind();
+            ddljobprofile.Items.Insert( 0, new ListItem("--SELECT JOB PROFILE--", "0"));
+        }
+
+        public void bindskills()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljobprofileskills join tbljobprofile on tbljobprofileskills.jpr_id=tbljobprofile.jpr_id", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvjobskills.DataSource = dt;
+            gvjobskills.DataBind();
+        }
+
+            protected void btnsaveskills_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tbljobprofileskills(jpr_id,tsk_name)values('"+ddljobprofile.SelectedValue+"','"+txtskillname.Text+"')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            bindskills();
+        }
+    }
+}
+=================================================
+MANAGE JOB RECRUITER ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejobrecruiter.aspx.cs" Inherits="kavineknaukri.admin_folder.managejobrecruiter" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+   <table>
+        <tr>
+           <td><asp:GridView ID="gvjobrecruiter" runat="server" AutoGenerateColumns="false" OnRowCommand="gvjobrecruiter_RowCommand">
+               <Columns>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER ID">
+                       <ItemTemplate>
+                           <%#Eval("jr_id")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER NAME">
+                       <ItemTemplate>
+                           <%#Eval("jr_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER URL">
+                       <ItemTemplate>
+                           <%#Eval("jr_url")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER EMAIl">
+                       <ItemTemplate>
+                           <%#Eval("jr_email")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER PASSWORD">
+                       <ItemTemplate>
+                           <%#Eval("jr_password")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-SEEKER RECRUITER DATE">
+                       <ItemTemplate>
+                           <%#Eval("inserted_date")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-RECRUITER STATUS">
+                       <ItemTemplate>
+                           <%#Eval("status").ToString() == "0" ? "ACTIVE-STATUS" : "INACTIVE-STATUS" %>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                    <asp:TemplateField HeaderText="ACTION BUTTON">
+                       <ItemTemplate>
+                          <asp:Button ID="actionbtn" runat="server" Text=' <%#Eval("status").ToString() == "0" ? "BLOCK" : "UNBLOCK" %>' CommandName="B" CommandArgument='<%#Eval("jr_id")%>' />
+                           </ItemTemplate>
+                   </asp:TemplateField>
+               </Columns>
+               </asp:GridView></td>
+        </tr>
+    </table>
+
+</asp:Content>
+
+=================================================
+MANAGE JOB RECRUITER ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejobrecruiter : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindjobrecruiter();
+            }
+        }
+
+        public void bindjobrecruiter()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tbljobrecruiter ", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvjobrecruiter.DataSource = dt;
+            gvjobrecruiter.DataBind();
+        }
+
+        protected void gvjobrecruiter_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("jobrecruiter_statuschange", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@jr_id", e.CommandArgument);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            bindjobrecruiter();
+        }
+    }
+}
+=================================================
+MANAGE JOB SEEKER ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managejobseeker.aspx.cs" Inherits="kavineknaukri.admin_folder.managejobseeker" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <table>
+        <tr>
+           <td><asp:GridView ID="gvjobseeker" runat="server" AutoGenerateColumns="false" OnRowCommand="gvjobseeker_RowCommand">
+               <Columns>
+                   <asp:TemplateField HeaderText="JOB-SEEKER ID">
+                       <ItemTemplate>
+                           <%#Eval("js_id")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-SEEKER NAME">
+                       <ItemTemplate>
+                           <%#Eval("js_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-SEEKER GENDER">
+                       <ItemTemplate>
+                           <%#Eval("js_gender")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-SEEKER EMAIl">
+                       <ItemTemplate>
+                           <%#Eval("js_email")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="DATE OF BIRTH">
+                       <ItemTemplate>
+                           <%#Eval("js_dob")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+
+                   <%--<asp:TemplateField HeaderText="JOB-SEEKER PASSWORD">
+                       <ItemTemplate>
+                           <%#Eval("js_password")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>--%>
+
+                    <asp:TemplateField HeaderText="JOB-SEEKER QUALIFICATION">
+                       <ItemTemplate>
+                           <%#Eval("js_qualification")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="JOB-SEEKER JOB PROFILE">
+                       <ItemTemplate>
+                           <%#Eval("js_jobprofile")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                   <asp:TemplateField HeaderText="JOB-SEEKER JOB PROFILE">
+                       <ItemTemplate>
+                           <%#Eval("js_skills")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="JOB-SEEKER LOCATION">
+                       <ItemTemplate>
+                           <%#Eval("tcity_name")%> , <%#Eval("ts_name")%> ,  <%#Eval("tc_name")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+
+                    <asp:TemplateField HeaderText="JOBSEEKER IMAGE">
+                       <ItemTemplate>
+                         <asp:Image ID="imgjs" runat="server" Height="70px" Width="70px" ImageUrl='<%#Eval("js_image","~/jobseeker folder/JOBSEEKERIMAGES/{0}")%>' />
+                      </ItemTemplate>
+                   </asp:TemplateField>
+
+                   <asp:TemplateField HeaderText="JOBSEEKER RESUME">
+                       <ItemTemplate>
+                       <asp:LinkButton ID="btnresumeshow" runat="server" Text='<%#Eval("js_resume")%>' CommandName="R" CommandArgument='<%#Eval("js_resume")%>' ></asp:LinkButton>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   
+                   <asp:TemplateField HeaderText="JOB-SEEKER INSERTED DATE">
+                       <ItemTemplate>
+                           <%#Eval("inserted_date")%>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                   <asp:TemplateField HeaderText="JOB-SEEKER STATUS">
+                       <ItemTemplate>
+                           <%#Eval("status").ToString() == "0" ? "ACTIVE-STATUS" : "INACTIVE-STATUS" %>
+                       </ItemTemplate>
+                   </asp:TemplateField>
+                    <asp:TemplateField HeaderText="ACTION BUTTON">
+                       <ItemTemplate>
+                          <asp:Button ID="actionbtn" runat="server" Text=' <%#Eval("status").ToString() == "0" ? "BLOCK" : "UNBLOCK" %>' CommandName="B" CommandArgument='<%#Eval("js_id")%>' />
+                       </ItemTemplate>
+                   </asp:TemplateField>
+               </Columns>
+               </asp:GridView></td>
+        </tr>
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE JOB SEEKER ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managejobseeker : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindjobseeker();
+            }
+        }
+
+        public void bindjobseeker()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("jobseeker_join ", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            gvjobseeker.DataSource = dt;
+            gvjobseeker.DataBind();
+        }
+
+        protected void gvjobseeker_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "B")
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("jobseeker_statuschange", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@js_id", e.CommandArgument);
+                cmd.ExecuteNonQuery();
+                con.Close();
+                bindjobseeker();
+            }
+
+            else if (e.CommandName == "R")
+            {
+                Response.Redirect("../jobseeker folder\\JOBSEEKERRESUME\\" + e.CommandArgument);
+            }
+        }
+    }
+}
+=================================================
+MANAGE JOB QUALIFICATION ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managequalification.aspx.cs" Inherits="kavineknaukri.admin_folder.managequalification" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>QUALIFICATION:</td>
+            <td><asp:TextBox ID="txtqualname" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE HOBBIE" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvqual" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="QUALIFICATION ID">
+                        <ItemTemplate>
+                            <%#Eval("tql_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="QUALIFICATION NAME">
+                        <ItemTemplate>
+                            <%#Eval("tql_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE JOB QUALIFICATION ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managequalification : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+
+            if (!IsPostBack)
+            {
+                bindqualificationname();
+            }
+
+        }
+
+        public void bindqualificationname()  
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblqualification", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            gvqual.DataSource = dt;
+            gvqual.DataBind();
+            con.Close();
+        }
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblqualification(tql_name)values('" +txtqualname.Text + "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+MANAGE JOB STATE ADMIN .ASPX
+=================================================
+<%@ Page Title="" Language="C#" MasterPageFile="~/admin folder/admin.Master" AutoEventWireup="true" CodeBehind="managestate.aspx.cs" Inherits="kavineknaukri.admin_folder.managestate" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+</asp:Content> 
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+     <table>
+        <tr>
+            <td>COUNTRY NAME:</td>
+            <td><asp:DropDownList ID="ddlcountry" runat="server"></asp:DropDownList></td>
+        </tr>
+         <tr>
+            <td>STATE:</td>
+            <td><asp:TextBox ID="txtstatename" runat="server"></asp:TextBox></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><asp:Button ID="btnsave" runat="server" Text="SAVE STATE" OnClick="btnsave_Click" /></td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><asp:GridView ID="gvstate" runat="server" AutoGenerateColumns="false">
+                <Columns>
+                    <asp:TemplateField HeaderText="STATE ID">
+                        <ItemTemplate>
+                            <%#Eval("ts_id")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                     <asp:TemplateField HeaderText="COUNTRY NAME">
+                        <ItemTemplate>
+                            <%#Eval("tc_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="STATE NAME">
+                        <ItemTemplate>
+                            <%#Eval("ts_name")%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                </asp:GridView></td>
+        </tr>
+
+    </table>
+</asp:Content>
+
+=================================================
+MANAGE JOB STATE ADMIN .ASPX.CS
+=================================================
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace kavineknaukri.admin_folder
+{
+    public partial class managestate : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"data source=KAVINEKCOMPUTER\SQLEXPRESS;initial catalog=DB_JOBPORTAL220723;integrated security=true");
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                bindstate();
+                bindcountry();
+            }
+        }
+
+        public void bindcountry()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblcountry", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            con.Close();
+            ddlcountry.DataTextField = "tc_name";
+            ddlcountry.DataValueField = "tc_id";
+            ddlcountry.DataSource = dt;
+            ddlcountry.DataBind();
+            ddlcountry.Items.Insert(0, new ListItem("--SLECET COUNTRY--", "0"));
+        }
+
+        public void bindstate()
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("select * from tblstate join tblcountry on tblstate.tc_id=tblcountry.tc_id", con);
+            SqlDataAdapter sda = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            gvstate.DataSource = dt;
+            gvstate.DataBind();
+            con.Close();
+        }
+
+        protected void btnsave_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlCommand cmd = new SqlCommand("insert into tblstate(tc_id,ts_name)values('"+ddlcountry.SelectedValue+"','" + txtstatename.Text + "')", con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
+}
+=================================================
+
+
+
+
+
+
